@@ -1,6 +1,7 @@
 package com.rasklaad
 
 import com.github.tomakehurst.wiremock.common.Metadata
+import com.github.tomakehurst.wiremock.extension.Parameters
 import com.github.tomakehurst.wiremock.matching.RequestPattern
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import groovy.transform.PackageScope
@@ -10,7 +11,8 @@ class MockRequest {
 
     private RequestPattern requestPattern
     private com.github.tomakehurst.wiremock.http.ResponseDefinition response
-
+    private Metadata metadata
+    private Map<String, Parameters> postServeActions
 
     private UUID id = UUID.randomUUID()
     private String name
@@ -48,13 +50,13 @@ class MockRequest {
         this.isPersistent = persistent
     }
 
-    void postServeAction() {
-        // TODO
+    void postServeActions(Map<String, Parameters> postServeActions) {
+        this.postServeActions = postServeActions
     }
 
 
     void metaData(Metadata metadata) {
-        // TODO
+       this.metadata = metadata
     }
 
     StubMapping build() {
@@ -62,6 +64,8 @@ class MockRequest {
         stubMapping.setId(id)
         stubMapping.setName(name)
         stubMapping.setPersistent(isPersistent)
+        stubMapping.setMetadata(metadata)
+        stubMapping.setPostServeActions(postServeActions)
         return stubMapping
     }
 }

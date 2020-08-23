@@ -104,7 +104,7 @@ class RequestDefinition {
     }
 
     void cookie(String key, StringValuePattern valuePattern) {
-        cookies.put(key, valuePattern);
+        cookies.put(key, valuePattern)
     }
 
 
@@ -117,10 +117,6 @@ class RequestDefinition {
 
     void customMatcher(ValueMatcher<Request> valueMatcher) {
         this.customMatcher = valueMatcher
-    }
-
-    void like() {
-        // TODO
     }
 
     RequestPattern build() {
