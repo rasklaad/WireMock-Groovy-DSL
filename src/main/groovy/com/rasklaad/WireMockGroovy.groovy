@@ -1,13 +1,14 @@
 package com.rasklaad
 
 import com.github.tomakehurst.wiremock.client.WireMock
+import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import groovy.transform.TypeChecked
 
 @TypeChecked
 class WireMockGroovy {
     private String url
     private int port
-    private final WireMock client
+    final WireMock client
 
     WireMockGroovy(String url, int port) {
         this.url = url
@@ -15,7 +16,11 @@ class WireMockGroovy {
         client = new WireMock(url, port)
     }
 
-    def mock(@DelegatesTo(strategy = Closure.DELEGATE_ONLY, value = MockRequest) Closure cl) {
+    WireMockGroovy(final WireMock client) {
+        this.client = client
+    }
+
+    StubMapping mock(@DelegatesTo(strategy = Closure.DELEGATE_ONLY, value = MockRequest) Closure cl) {
         def mockRequest = new MockRequest()
         def code = cl.rehydrate(mockRequest, this, this)
         code.resolveStrategy = Closure.DELEGATE_ONLY
