@@ -8,6 +8,28 @@
     <name>wiremock-groovy-dsl project</name>
     <version>0.0.1</version>
     <packaging>jar</packaging>
+    <scm>
+        <connection>scm:git:git://github.com/rasklaad/WireMock-Groovy-DSL.git</connection>
+        <developerConnection>scm:git:git://github.com/rasklaad/WireMock-Groovy-DSL.git</developerConnection>
+        <url>https://github.com/rasklaad/WireMock-Groovy-DSL</url>
+    </scm>
+    <description>Groovy DSL for defining wiremock stubs</description>
+    <url>https://github.com/rasklaad/WireMock-Groovy-DSL</url>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://opensource.org/licenses/MIT</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Anton Deriabin</name>
+            <email>ander.2142@gmail.com</email>
+        </developer>
+    </developers>
 
     <dependencies>
         <dependency>
@@ -21,20 +43,23 @@
             <artifactId>groovy-all</artifactId>
             <version>3.0.5</version>
             <type>pom</type>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>com.github.tomakehurst</groupId>
             <artifactId>wiremock-jre8</artifactId>
             <version>2.27.1</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
+
     <build>
         <plugins>
             <plugin>
                 <groupId>org.codehaus.gmavenplus</groupId>
                 <artifactId>gmavenplus-plugin</artifactId>
-                <version>1.9.1</version>
+                <version>1.10.0</version>
                 <executions>
                     <execution>
                         <goals>
@@ -44,6 +69,7 @@
                             <goal>compile</goal>
                             <goal>generateTestStubs</goal>
                             <goal>compileTests</goal>
+                            <goal>groovydoc</goal>
                             <goal>removeStubs</goal>
                             <goal>removeTestStubs</goal>
                         </goals>
@@ -56,23 +82,63 @@
                 <version>3.8.1</version>
             </plugin>
             <plugin>
-                <!-- if including source jars, use the no-fork goals
-                     otherwise both the Groovy sources and Java stub sources
-                     will get included in your jar -->
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <!-- source plugin \> = 2.1 is required to use the no-fork goals -->
                 <version>3.2.1</version>
                 <executions>
                     <execution>
                         <id>attach-sources</id>
                         <goals>
                             <goal>jar-no-fork</goal>
-                            <goal>test-jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.bluetrainsoftware.maven</groupId>
+                <artifactId>groovydoc-maven-plugin</artifactId>
+                <version>2.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-docs</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>attach-docs</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>1.6.6</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <serverId>com.rasklaad.wiremock-groovy-dsl</serverId>
+                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.5</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
                         </goals>
                     </execution>
                 </executions>
             </plugin>
         </plugins>
     </build>
+    <distributionManagement>
+        <repository>
+            <id>com.rasklaad.wiremock-groovy-dsl</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
 </project>

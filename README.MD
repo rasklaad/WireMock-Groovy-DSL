@@ -23,3 +23,22 @@ can be defined with groovy DSL:
   }
 }
 ```
+
+## Installation
+
+```
+<dependency>
+    <groupId>com.rasklaad</groupId>
+    <artifactId>wiremock-groovy-dsl</artifactId>
+    <version>0.0.1</version>
+</dependency>
+```
+
+NOTE:
+You must define you own WireMock dependency:
+```
+<groupId>com.github.tomakehurst</groupId>
+<artifactId>wiremock-jre8</artifactId>
+<version>your.wiremock.version</version>
+```
+
